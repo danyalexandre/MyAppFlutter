@@ -1,6 +1,9 @@
+// Copyright 2018 The Flutter team. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
-import 'package:my_app/constants.dart';
-import 'package:my_app/login/auth.dart';
+import 'package:my_app/login/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,38 +12,18 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: const Center(
-        child: Text(
-          'Welcome in MyApp',
-          textDirection: TextDirection.ltr,
-          style: TextStyle(
-            fontSize: 32,
-            color: Colors.black87,
-          ),
-        ),
-      ),
-      /*debugShowCheckedModeBanner: false,
-      title: 'My App',
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'LoginPage',
       theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: kPrimaryColor,
+        textTheme: const TextTheme(
+            bodyText2: TextStyle(
+          color: Colors.white,
+        )),
       ),
-      //home: AuthScreen(),
-      home: Scaffold(
-        body: const Center(
-          child: Text(
-            'Welcome in MyApp',
-            style: TextStyle(
-              color: kPrimaryLightColor,
-            ),
-          ),
-        ),
-      ),*/
+      home: LoginPage(),
     );
   }
 }
