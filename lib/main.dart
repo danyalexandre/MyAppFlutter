@@ -14,15 +14,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'LoginPage',
-      theme: ThemeData(
-        textTheme: const TextTheme(
-            bodyText2: TextStyle(
-          color: Colors.white,
-        )),
-      ),
       home: LoginPage(),
     );
   }
