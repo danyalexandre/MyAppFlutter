@@ -14,10 +14,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'LoginPage',
-      home: LoginPage(),
+      theme: ThemeData(
+        fontFamily: 'Lato',
+      ),
+      home: const LoginPage(),
     );
   }
 }
