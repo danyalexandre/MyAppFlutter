@@ -19,8 +19,26 @@ class MyApp extends StatelessWidget {
       title: 'LoginPage',
       theme: ThemeData(
         fontFamily: 'Lato',
+        appBarTheme: const AppBarTheme(
+            color: Colors.transparent,
+            elevation: 0,
+            iconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+            titleTextStyle: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
-      home: const LoginPage(),
+      home: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("./../assets/img/fond.jpeg"),
+              fit: BoxFit.cover),
+        ),
+        child: const LoginPage(),
+      ),
     );
   }
 }
