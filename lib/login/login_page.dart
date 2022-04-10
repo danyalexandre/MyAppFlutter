@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/login/sign_up_page.dart';
 import 'package:my_app/widgets/widget.dart';
+import 'dart:core';
+import 'package:email_validator/email_validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -10,11 +12,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool passwordVisible = false;
-  void togglePassword() {
-    setState(() {
-      passwordVisible = !passwordVisible;
-    });
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  String error = '';
+  bool loading = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -31,81 +39,6 @@ class _LoginPageState extends State<LoginPage> {
           image: AssetImage('../assets/img/logo.jpeg'),
         ),
       ),
-    );
-
-    //TextField de l'email
-    final email = Container(
-      decoration: BoxDecoration(
-        color: const Color(0xfff1f1f5),
-        borderRadius: BorderRadius.circular(14.0),
-      ),
-      child: TextFormField(
-        cursorColor: const Color(0xFF666bd3),
-        decoration: InputDecoration(
-          hintText: 'Email',
-          hintStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff94959b),
-          ),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: IconButton(
-            color: const Color(0xFF666bd3),
-            splashRadius: 1,
-            onPressed: () => {},
-            icon: const Icon(Icons.mail_outlined),
-          ),
-        ),
-      ),
-    );
-
-    //TextField du password
-    final password = Container(
-      decoration: BoxDecoration(
-        color: const Color(0xfff1f1f5),
-        borderRadius: BorderRadius.circular(14.0),
-      ),
-      child: TextFormField(
-        cursorColor: const Color(0xFF666bd3),
-        obscureText: !passwordVisible,
-        decoration: InputDecoration(
-          hintText: 'Mot de passe',
-          hintStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff94959b),
-          ),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: IconButton(
-            color: const Color(0xFF666bd3),
-            splashRadius: 1,
-            onPressed: togglePassword,
-            icon: Icon(passwordVisible
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined),
-          ),
-        ),
-      ),
-    );
-
-    final loginButton = ElevatedButton(
-      child: const Text('Connexion'),
-      onPressed: () {
-        null;
-      },
-      style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(50),
-          padding: const EdgeInsets.all(20.0),
-          primary: const Color(0xFF666bd3),
-          textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14.0))),
     );
 
     final forgotButton = TextButton(
@@ -149,36 +82,61 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Center(
-        child: Container(
-          /*decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.black, Color.fromARGB(255, 87, 87, 87)])),*/
-          padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              logo,
-              const SizedBox(height: 36.0),
-              const MyTextField(
-                hintText: 'Email',
-                inputType: TextInputType.name,
-                backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                textColor: Color.fromARGB(255, 0, 0, 0),
-              ),
-              const MyPasswordField(
-                backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                textColor: Color.fromARGB(255, 0, 0, 0),
-              ),
-              const SizedBox(height: 24.0),
-              loginButton,
-              const SizedBox(height: 24.0),
-              forgotButton,
-              const SizedBox(height: 24.0),
-              registerButton,
-            ],
+      body: Form(
+        key: _formKey,
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                logo,
+                const SizedBox(height: 36.0),
+                MyTextField(
+                  hintText: 'Email',
+                  inputType: TextInputType.emailAddress,
+                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  textColor: Color.fromARGB(255, 0, 0, 0),
+                  controller: emailController,
+                  validator: (value) {
+                    if (!EmailValidator.validate(
+                        value != null || value!.trim().isEmpty
+                            ? value.trim()
+                            : '')) {
+                      return 'Entrer une adresse mail valide';
+                    }
+                    return null;
+                  },
+                ),
+                MyPasswordField(
+                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  textColor: Color.fromARGB(255, 0, 0, 0),
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Ce champ est obligatoire';
+                    }
+                    if (value.trim().length < 8) {
+                      return 'Le mot de passe doit contenir plus de 8 charactère!';
+                    }
+                    // Return null if the entered password is valid
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 24.0),
+                MyButton(
+                    buttonName: 'Login',
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {}
+                    },
+                    bgColor: Color(0xFF666bd3),
+                    textColor: Colors.white),
+                const SizedBox(height: 24.0),
+                forgotButton,
+                const SizedBox(height: 24.0),
+                registerButton,
+              ],
+            ),
           ),
         ),
       ),
