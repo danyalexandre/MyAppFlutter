@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "139759571374",
+    "project_id": "lupiludi-6cfea",
+    "storage_bucket": "lupiludi-6cfea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139759571374:android:df53a2af0c4863a994f83f",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139759571374-kcuqfd1pp156j1gub26s0e42uve0i0u3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAff_CgU6WMIIOn98I60fKsMYVKUrPN9B4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139759571374-kcuqfd1pp156j1gub26s0e42uve0i0u3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "139759571374-3hfe9t85rmqqt798d14loi1pitu1rn4t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ch.danyalexandre.myApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
