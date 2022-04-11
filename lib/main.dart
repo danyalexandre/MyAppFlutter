@@ -4,11 +4,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/screens/splash/splash_page.dart';
-import 'package:my_app/services/authentication.dart';
-import 'package:provider/provider.dart';
-
-import 'models/user.dart';
+import 'package:my_app/screens/login/login_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,27 +26,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<AppUser?>.value(
-      value: AuthenticationService().user,
-      initialData: null,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'LoginPage',
-        theme: ThemeData(
-          fontFamily: 'Lato',
-          appBarTheme: const AppBarTheme(
-              color: Colors.transparent,
-              elevation: 0,
-              iconTheme: IconThemeData(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'LoginPage',
+      theme: ThemeData(
+        fontFamily: 'Lato',
+        appBarTheme: const AppBarTheme(
+            color: Colors.transparent,
+            elevation: 0,
+            iconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+            titleTextStyle: TextStyle(
+                fontSize: 20,
                 color: Colors.white,
-              ),
-              titleTextStyle: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
-        ),
-        home: const SplashScreen(),
+                fontWeight: FontWeight.bold)),
       ),
+      home: const LoginPage(),
     );
   }
 }
