@@ -181,7 +181,7 @@ class _SignUpState extends State<SignUp> {
                                                   .pushReplacement(
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        MyHomePage()),
+                                                        const LoginPage()),
                                               );
                                               /*error =
                                                   'Erreur lors de l\'enregistrement. Veuillez réssayer.';*/

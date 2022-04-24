@@ -159,6 +159,9 @@ class _LoginPageState extends State<LoginPage> {
                                       MaterialPageRoute(
                                           builder: (context) => MyHomePage()),
                                     );
+                                  } else {
+                                    error =
+                                        'Un soucis a eu lieu pendant la connexion. Veuillez réssayer.';
                                   }
                                 } catch (e) {
                                   setState(() {
