@@ -4,6 +4,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/screens/home/home.dart';
 import 'package:my_app/screens/login/login_page.dart';
 
 Future<void> main() async {
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.bold)),
       ),
-      home: const LoginPage(),
+      home: const MyHomePage(),
     );
   }
 }
