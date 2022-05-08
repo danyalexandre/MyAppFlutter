@@ -7,6 +7,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:my_app/services/authentication.dart';
 
 class LoginPage extends StatefulWidget {
+  static const pageName = "/login";
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -74,9 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const SignUp()),
-              );
+              Navigator.of(context).pushNamed(SignUp.pageName);
             },
           ),
         ],
@@ -155,10 +154,12 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                   //La connexion a réussi
                                   if (result != null) {
-                                    Navigator.of(context).pushReplacement(
+                                    /*Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                           builder: (context) => MyHomePage()),
-                                    );
+                                    );*/
+                                    Navigator.of(context)
+                                        .pushNamed(MyHomePage.pageName);
                                   } else {
                                     error =
                                         'Un soucis a eu lieu pendant la connexion. Veuillez réssayer.';

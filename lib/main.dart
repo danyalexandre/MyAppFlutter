@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/screens/home/home.dart';
 import 'package:my_app/screens/login/login_page.dart';
+import 'package:my_app/screens/login/sign_up_page.dart';
+import 'package:my_app/screens/profile/profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +30,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: LoginPage.pageName,
+      routes: {
+        MyHomePage.pageName: (context) => const MyHomePage(),
+        ProfilePage.pageName: (context) => const ProfilePage(),
+        LoginPage.pageName: (context) => const LoginPage(),
+        SignUp.pageName: (context) => const SignUp(),
+      },
       debugShowCheckedModeBanner: false,
       title: 'LoginPage',
       theme: ThemeData(
@@ -43,7 +52,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.bold)),
       ),
-      home: const MyHomePage(),
+      home: const LoginPage(),
     );
   }
 }

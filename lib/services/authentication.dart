@@ -5,15 +5,7 @@ import 'package:my_app/services/database.dart';
 
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  /*AppUser? _userFromFirebase(User? user) {
-    return user != null ? AppUser(user.uid) : null;
-  }
-
-  //Va écouter les modifications d'état sur l'utilisateur
-  Stream<AppUser?> get user {
-    return _auth.authStateChanges().map(_userFromFirebase);
-  }*/
+  final FirebaseFirestore _dataBase = FirebaseFirestore.instance;
 
   //Sign In Email + Password
   Future signIn(String email, String password) async {
@@ -29,25 +21,40 @@ class AuthenticationService {
     }
   }
 
+  Future<bool> doesUserExist(currentUserName) async {
+    bool exist = false;
+    try {
+// if the size of value is greater then 0 then that doc exist.
+      exist = await FirebaseFirestore.instance
+          .collection('users')
+          .where('pseudo', isEqualTo: currentUserName)
+          .get()
+          .then((value) => value.size > 0 ? true : false);
+      return exist;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   //Register
-  Future registerUser(
-      String prenom, String nom, String email, String password) async {
+  Future registerUser(String pseudo, String email, String password) async {
     try {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        //Stockage des informations de l'utilisateur dans la collection "Users"
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(value.user?.uid)
-            .set({"email": email, "prenom": prenom, "nom": nom});
+        print(value.user);
+        if (value.user != null) {
+          //Stockage des informations de l'utilisateur dans la collection "Users"
+          _dataBase
+              .collection("users")
+              .doc(value.user?.uid)
+              .set({"email": email, "pseudo": pseudo});
+        } else {
+          return false;
+        }
       });
       return true;
-      /*User? user = result.user;
-      if (user != null) {
-        await DatabaseService(user.uid).saveUser(prenom, nom, email);
-        return _userFromFirebase(user);
-      }*/
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
