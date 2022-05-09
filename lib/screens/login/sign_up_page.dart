@@ -152,11 +152,7 @@ class _SignUpState extends State<SignUp> {
                                               loading = true;
                                               error = '';
                                             });
-                                            final userExist =
-                                                await _auth.doesUserExist(
-                                                    pseudoController.value.text
-                                                        .toLowerCase());
-                                            if (!userExist) {
+                                            try {
                                               if (_formKey.currentState!
                                                   .validate()) {
                                                 var pseudo =
@@ -166,7 +162,12 @@ class _SignUpState extends State<SignUp> {
                                                 var password =
                                                     passwordController
                                                         .value.text;
-                                                try {
+                                                final userExist =
+                                                    await _auth.doesUserExist(
+                                                        pseudoController
+                                                            .value.text
+                                                            .toLowerCase());
+                                                if (!userExist) {
                                                   dynamic result =
                                                       await _auth.registerUser(
                                                           pseudo,
@@ -176,25 +177,30 @@ class _SignUpState extends State<SignUp> {
                                                     setState(() {
                                                       loading = false;
                                                       Navigator.of(context)
-                                                          .pushNamed(MyHomePage
+                                                          .pushNamed(LoginPage
                                                               .pageName);
                                                       error =
                                                           'Erreur lors de l\'enregistrement. Veuillez réssayer.';
                                                     });
                                                   }
-                                                } catch (e) {
+                                                } else {
+                                                  //Le pseudo existe déjà dans la bdd
                                                   setState(() {
                                                     loading = false;
-                                                    error = e.toString();
+                                                    error =
+                                                        'Ce pseudo est déjà utilisé.';
                                                   });
                                                 }
+                                              } else {
+                                                setState(() {
+                                                  loading = false;
+                                                  error = '';
+                                                });
                                               }
-                                            } else {
-                                              //Le pseudo existe déjà dans la bdd
+                                            } catch (e) {
                                               setState(() {
                                                 loading = false;
-                                                error =
-                                                    'Ce pseudo est déjà utilisé.';
+                                                error = e.toString();
                                               });
                                             }
                                           },

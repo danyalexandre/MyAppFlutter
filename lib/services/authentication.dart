@@ -22,15 +22,13 @@ class AuthenticationService {
   }
 
   Future<bool> doesUserExist(currentUserName) async {
-    bool exist = false;
     try {
-// if the size of value is greater then 0 then that doc exist.
-      exist = await FirebaseFirestore.instance
+      //Retourne Vrai si le username existe dans la base
+      final result = await _dataBase
           .collection('users')
           .where('pseudo', isEqualTo: currentUserName)
-          .get()
-          .then((value) => value.size > 0 ? true : false);
-      return exist;
+          .get();
+      return result.docs.isNotEmpty;
     } catch (e) {
       print(e.toString());
       return false;
@@ -43,7 +41,6 @@ class AuthenticationService {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        print(value.user);
         if (value.user != null) {
           //Stockage des informations de l'utilisateur dans la collection "Users"
           _dataBase
@@ -63,6 +60,9 @@ class AuthenticationService {
         print(
             'An account already exists for that email address you are trying to sign up.');
         throw ("Un compte existe déjà pour cette adresse e-mail que vous essayez de vous inscrire.");
+      } else {
+        print(e.code);
+        throw (e.code);
       }
     } catch (e) {
       print("Exception thrown on Sign Up page");
